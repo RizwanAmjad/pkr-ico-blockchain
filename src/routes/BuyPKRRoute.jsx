@@ -14,9 +14,12 @@ function BuyPKRRoute(props) {
   const handleBuyPKR = async () => {
     const unitInLowest = 100;
     const exchangeRate = 100;
+
+    console.log(parseInt(pkrAmount * unitInLowest));
+
     await (
-      await pkrCrowdsale.buyTokens(pkrAmount * unitInLowest, {
-        value: pkrAmount * unitInLowest * exchangeRate,
+      await pkrCrowdsale.buyTokens(parseInt(pkrAmount * unitInLowest), {
+        value: parseInt(pkrAmount * unitInLowest) * exchangeRate,
       })
     ).wait();
 
