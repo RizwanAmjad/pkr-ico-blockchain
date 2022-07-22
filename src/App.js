@@ -20,6 +20,7 @@ import "normalize.css";
 
 function App() {
   const [account, setAccount] = useState({});
+  const [pkrBalance, setPkrBalance] = useState(0);
   const [pkr, setPkr] = useState();
   const [pkrCrowdsale, setPkrCrowdsale] = useState();
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ function App() {
       balance: await signer.getBalance(),
     });
     loadContracts(signer);
+    setPkrBalance((await pkr.balanceOf(account.address)).toNumber() / 100);
     setLoading(false);
   };
 
@@ -66,7 +68,7 @@ function App() {
           balance={parseFloat(
             ethers.utils.formatEther(account.balance || 0)
           ).toFixed(4)}
-          tokens={5}
+          tokens={pkrBalance}
         />
       </div>
       <ContractsContext.Provider value={{ pkr, pkrCrowdsale }}>

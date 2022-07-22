@@ -6,10 +6,14 @@ import styles from "./css/buy-pkr.module.css";
 function BuyPKRRoute(props) {
   const { pkr, pkrCrowdsale } = useContracts();
   const [pkrAmount, setPkrAmount] = useState(0);
-  const handleBuyPKR = () => {
+  const handleBuyPKR = async () => {
+    const unitInLowest = 100;
+    const exchangeRate = 100;
     console.log("Buying...", pkrAmount);
-    console.log(pkr);
-    console.log(pkrCrowdsale);
+    const result = await pkrCrowdsale.buyTokens(pkrAmount * unitInLowest, {
+      value: pkrAmount * unitInLowest * exchangeRate,
+    });
+    console.log(result);
   };
   return (
     <div>
