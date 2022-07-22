@@ -7,6 +7,7 @@ import LoadingComponent from "./components/LoadingComponent";
 import HomeRoute from "./routes/HomeRoute";
 import BuyPKRRoute from "./routes/BuyPKRRoute";
 
+import AccountsContext from "./context/AccountsContext";
 import ContractsContext from "./context/ContractsContext";
 
 import PKRAbi from "./contractsData/PKR.json";
@@ -20,7 +21,6 @@ import "normalize.css";
 
 function App() {
   const [account, setAccount] = useState({});
-  const [pkrBalance, setPkrBalance] = useState(0);
   const [pkr, setPkr] = useState();
   const [pkrCrowdsale, setPkrCrowdsale] = useState();
   const [loading, setLoading] = useState(false);
@@ -30,17 +30,7 @@ function App() {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    setAccount({
-      ...account,
-      address: await signer.getAddress(),
-      balance: await signer.getBalance(),
-    });
-    loadContracts(signer);
-    setPkrBalance((await pkr.balanceOf(account.address)).toNumber() / 100);
-    setLoading(false);
-  };
 
-  const loadContracts = (signer) => {
     setLoading("Loading contracts");
     const pkr = new ethers.Contract(PKRAddress.address, PKRAbi.abi, signer);
     const pkrCrowdsale = new ethers.Contract(
@@ -50,7 +40,24 @@ function App() {
     );
     setPkr(pkr);
     setPkrCrowdsale(pkrCrowdsale);
+
+    const address = await signer.getAddress();
+    setAccount({
+      ...account,
+      address,
+      signer,
+      balance: await signer.getBalance(),
+      pkrBalance: (await pkr.balanceOf(address)).toNumber() / 100,
+    });
     setLoading(false);
+  };
+
+  const loadBalances = async () => {
+    setAccount({
+      ...account,
+      balance: await account.signer.getBalance(),
+      pkrBalance: (await pkr.balanceOf(account.address)).toNumber() / 100,
+    });
   };
 
   useEffect(() => {
@@ -68,16 +75,18 @@ function App() {
           balance={parseFloat(
             ethers.utils.formatEther(account.balance || 0)
           ).toFixed(4)}
-          tokens={pkrBalance}
+          tokens={account.pkrBalance}
         />
       </div>
       <ContractsContext.Provider value={{ pkr, pkrCrowdsale }}>
-        <div className="AppContent">
-          <Routes>
-            <Route path="/" element={<HomeRoute />} />
-            <Route path="/buy-pkr" element={<BuyPKRRoute />} />
-          </Routes>
-        </div>
+        <AccountsContext.Provider value={{ account, setAccount, loadBalances }}>
+          <div className="AppContent">
+            <Routes>
+              <Route path="/" element={<HomeRoute />} />
+              <Route path="/buy-pkr" element={<BuyPKRRoute />} />
+            </Routes>
+          </div>
+        </AccountsContext.Provider>
       </ContractsContext.Provider>
     </BrowserRouter>
   );
