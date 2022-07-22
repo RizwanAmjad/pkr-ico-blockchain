@@ -28,6 +28,10 @@
   color: #61dafb;
 }
 
+.AppContent {
+  padding: 0.5rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

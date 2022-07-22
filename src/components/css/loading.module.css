@@ -1,0 +1,9 @@
+.container {
+  align-items: center;
+  display: flex;
+  font-weight: bolder;
+  font-size: 4rem;
+  height: 100vh;
+  text-align: center;
+  justify-content: center;
+}

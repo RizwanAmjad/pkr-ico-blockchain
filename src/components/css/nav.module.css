@@ -1,0 +1,35 @@
+.nav {
+  background: linear-gradient(
+    30deg,
+    var(--primary-color),
+    var(--primary-color-comb)
+  );
+}
+.navInfo {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  padding: 0.5rem 1rem 0 1rem;
+}
+
+.nav .navigation {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+}
+.nav a {
+  color: inherit;
+  font-size: inherit;
+  text-decoration: inherit;
+}
+
+.nav .navigation .navItem {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 0.25rem solid transparent;
+}
+
+.nav .navigation .navItem:hover {
+  border-color: white;
+}

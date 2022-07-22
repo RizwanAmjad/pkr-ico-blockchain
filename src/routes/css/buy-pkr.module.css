@@ -1,0 +1,16 @@
+.formInput input {
+  margin: 4px 0;
+  padding: 0.5rem 1rem;
+}
+
+.formInput input[type="submit"] {
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: inherit;
+}
+
+.formInput input[type="submit"]:hover {
+  background-color: var(--primary-color-comb);
+  cursor: pointer;
+}
