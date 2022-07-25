@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import "./PKR.sol";
 
 contract PKRCrowdsale {
-    address admin;
+    address payable admin;
 
     PKR public pkrContract;
     uint256 public tokenPrice;
@@ -15,7 +15,7 @@ contract PKRCrowdsale {
 
         // Assign an admin, which is an external address that will have special
         // priviledge other accounts won't have (e.g. End the token sale)
-        admin = msg.sender;
+        admin = payable(msg.sender);
 
         // Assign Token Contract to the crowd sale
         pkrContract = _pkrContract;
@@ -24,13 +24,15 @@ contract PKRCrowdsale {
     }
 
     function buyTokens(uint256 _numberOfTokens) public payable {
-        require(msg.value == multiply(_numberOfTokens, tokenPrice), "Amount should be sent that equals ");
+        require(msg.value == multiply(_numberOfTokens, tokenPrice), "Amount should be sent that equals the value of PKR");
         // check if pkrContract has enough balance
         require(pkrContract.balanceOf(address(this)) >= _numberOfTokens, "No enough PKR tokens");
         // Require a successful transfer of tokens 
         require(pkrContract.transfer(msg.sender, _numberOfTokens));
         // keep track of how many tokens are sold
         tokensSold += _numberOfTokens;
+        // transfer the value of pkrs to the admin account
+        admin.transfer(msg.value);
         // trigger the sell event
         emit Sell(msg.sender, _numberOfTokens);
     }

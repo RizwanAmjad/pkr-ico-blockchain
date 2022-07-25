@@ -1,37 +1,34 @@
 import React, { useState } from "react";
 
-import { BigNumber } from "ethers";
-
 import useContracts from "../hooks/useContracts";
 import useAccounts from "../hooks/useAccounts";
 
 import styles from "./css/buy-pkr.module.css";
 
-function BuyPKRRoute(props) {
-  const { loadBalances } = useAccounts();
-
-  const { pkrCrowdsale } = useContracts();
+function AdminRoute(props) {
   const [pkrAmount, setPkrAmount] = useState(0);
 
-  const handleBuyPKR = async () => {
-    const unitInLowest = 100;
-    const exchangeRate = BigNumber.from(100000000000000);
+  const { pkr, pkrCrowdsale } = useContracts();
+  const { loadBalances } = useAccounts();
 
+  const handleImportPKR = async () => {
+    const lowestInUnit = 100;
     await (
-      await pkrCrowdsale.buyTokens(BigNumber.from(pkrAmount * unitInLowest), {
-        value: exchangeRate.mul(pkrAmount * unitInLowest),
-      })
+      await pkr.transfer(
+        pkrCrowdsale.address,
+        parseInt(pkrAmount * lowestInUnit)
+      )
     ).wait();
-
     loadBalances();
   };
+
   return (
     <div>
       <form
         className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
-          handleBuyPKR();
+          handleImportPKR();
         }}
       >
         <div className={styles.formInput}>
@@ -40,16 +37,16 @@ function BuyPKRRoute(props) {
             placeholder="Number of PKR"
             value={pkrAmount || ""}
             onChange={({ target }) =>
-              setPkrAmount(target.value >= 0 ? target.value : 0)
+              setPkrAmount(target.value > 0 ? target.value : 0)
             }
           />
         </div>
         <div className={styles.formInput}>
-          <input type="submit" value="Buy!" />
+          <input type="submit" value="Crowdsale!" />
         </div>
       </form>
     </div>
   );
 }
 
-export default BuyPKRRoute;
+export default AdminRoute;

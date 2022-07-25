@@ -34,7 +34,7 @@ function SendPKRRoute(props) {
             placeholder="Number of PKR"
             value={pkrAmount || ""}
             onChange={({ target }) =>
-              setPkrAmount(target.value >= 0 ? target.value : 0)
+              setPkrAmount(target.value > 0 ? target.value : 0)
             }
           />
         </div>

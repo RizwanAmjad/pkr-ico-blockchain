@@ -21,6 +21,9 @@ function NavComponent({ title, user, balance, tokens }) {
         <Link to="send-pkr">
           <div className={styles.navItem}>Send PKR</div>
         </Link>
+        <Link to="admin">
+          <div className={styles.navItem}>Admin</div>
+        </Link>
       </div>
     </nav>
   );

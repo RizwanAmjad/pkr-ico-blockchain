@@ -1,11 +1,12 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { BigNumber } = require("ethers");
 
 // constants
 const TOTAL_SUPPLY = 25000;
-const TOKEN_PRICE = 100;
+const TOKEN_PRICE = 100000000000000;
 
-describe("PKRCrowdslae", async function () {
+describe("PKRCrowdsale", async function () {
   let pkrCrowdsale;
   let pkr;
   let [deployer, acc1, acc2, acc3] = await ethers.getSigners();
@@ -31,6 +32,20 @@ describe("PKRCrowdslae", async function () {
       await pkr.transfer(pkrCrowdsale.address, 25);
       await pkrCrowdsale.connect(acc1).buyTokens(tokens, { value });
       expect(await pkrCrowdsale.tokensSold()).to.equal(tokens);
+    });
+
+    it("checks if ethers are transfered", async function () {
+      const tokens = 2;
+      const value = tokens * TOKEN_PRICE;
+
+      await pkr.transfer(pkrCrowdsale.address, 25);
+
+      const initialBalance = await deployer.getBalance();
+      await pkrCrowdsale.connect(acc1).buyTokens(tokens, { value });
+
+      const finalBalance = initialBalance.add(value);
+
+      expect(await deployer.getBalance()).to.equal(finalBalance);
     });
   });
 

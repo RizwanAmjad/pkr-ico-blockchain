@@ -8,7 +8,7 @@ const hre = require("hardhat");
 
 // constants
 const TOTAL_SUPPLY = 25000;
-const TOKEN_PRICE = 100;
+const TOKEN_PRICE = 100000000000000;
 
 async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);

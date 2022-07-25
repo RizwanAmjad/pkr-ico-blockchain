@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavComponent from "./components/NavComponent";
 import LoadingComponent from "./components/LoadingComponent";
 
+import AdminRoute from "./routes/AdminRoute";
 import HomeRoute from "./routes/HomeRoute";
 import BuyPKRRoute from "./routes/BuyPKRRoute";
 import SendPKRRoute from "./routes/SendPKRRoute";
@@ -87,6 +88,7 @@ function App() {
               <Route path="/" element={<HomeRoute />} />
               <Route path="/buy-pkr" element={<BuyPKRRoute />} />
               <Route path="/send-pkr" element={<SendPKRRoute />} />
+              <Route path="/admin" element={<AdminRoute />} />
             </Routes>
           </div>
         </AccountsContext.Provider>
