@@ -4,8 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import NavComponent from "./components/NavComponent";
 import LoadingComponent from "./components/LoadingComponent";
+
 import HomeRoute from "./routes/HomeRoute";
 import BuyPKRRoute from "./routes/BuyPKRRoute";
+import SendPKRRoute from "./routes/SendPKRRoute";
 
 import AccountsContext from "./context/AccountsContext";
 import ContractsContext from "./context/ContractsContext";
@@ -84,6 +86,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeRoute />} />
               <Route path="/buy-pkr" element={<BuyPKRRoute />} />
+              <Route path="/send-pkr" element={<SendPKRRoute />} />
             </Routes>
           </div>
         </AccountsContext.Provider>
