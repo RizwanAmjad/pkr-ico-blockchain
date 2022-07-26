@@ -1,6 +1,5 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { BigNumber } = require("ethers");
 
 // constants
 const TOTAL_SUPPLY = 25000;
@@ -16,7 +15,12 @@ describe("PKRCrowdsale", async function () {
     pkr = await PKR.deploy(TOTAL_SUPPLY);
 
     const PKRCrowdsale = await ethers.getContractFactory("PKRCrowdsale");
-    pkrCrowdsale = await PKRCrowdsale.deploy(pkr.address, TOKEN_PRICE);
+    pkrCrowdsale = await PKRCrowdsale.deploy(
+      pkr.address,
+      TOKEN_PRICE,
+      parseInt(Date.now() / 1000) + 120, // current timestamp
+      parseInt(Date.now() / 1000) + 240 // timestamp after 60 sec
+    );
   });
 
   describe("Deployment defaults", function () {
@@ -46,6 +50,12 @@ describe("PKRCrowdsale", async function () {
       const finalBalance = initialBalance.add(value);
 
       expect(await deployer.getBalance()).to.equal(finalBalance);
+    });
+  });
+
+  describe("Time Crowdsale", function () {
+    it("is closed", async function () {
+      expect(await pkrCrowdsale.hasClosed()).to.equal(false);
     });
   });
 

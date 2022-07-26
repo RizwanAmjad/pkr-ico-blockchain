@@ -9,6 +9,8 @@ const hre = require("hardhat");
 // constants
 const TOTAL_SUPPLY = 25000;
 const TOKEN_PRICE = 100000000000000;
+const TIME_TO_START_CROWDSALE = 60;
+const TIME_TO_CROWDSALE_END = 120;
 
 async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
@@ -24,7 +26,12 @@ async function main() {
   const pkr = await PKR.deploy(TOTAL_SUPPLY);
 
   const PKRCrowdsale = await hre.ethers.getContractFactory("PKRCrowdsale");
-  const pkrCrowdsale = await PKRCrowdsale.deploy(pkr.address, TOKEN_PRICE);
+  const pkrCrowdsale = await PKRCrowdsale.deploy(
+    pkr.address,
+    TOKEN_PRICE,
+    parseInt(Date.now() / 1000) + TIME_TO_START_CROWDSALE,
+    parseInt(Date.now() / 1000) + TIME_TO_CROWDSALE_END
+  );
 
   await lock.deployed();
 
