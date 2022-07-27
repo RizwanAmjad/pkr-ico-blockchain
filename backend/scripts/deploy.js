@@ -10,7 +10,7 @@ const hre = require("hardhat");
 const TOTAL_SUPPLY = 25000;
 const TOKEN_PRICE = 100000000000000;
 const TIME_TO_START_CROWDSALE = 60;
-const TIME_TO_CROWDSALE_END = 120;
+const TIME_TO_CROWDSALE_END = 60 + 24 * 60 * 60; // 1 day
 
 async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
